@@ -185,6 +185,153 @@ $$\begin{aligned}
 H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}
 \end{aligned}$$
 并做以下声明：
+对于高阶项来说，为了避免相同电容的重复排列，有：$\alpha^{mn}_2=\alpha^{nm}_2,\beta^{mn}_2=\beta^{nm}_2$，更高项($\alpha^{ijk...}_l,\beta^{ijk...}_l$)也一样
 
-## 一些在写的过程中突然想到，并且可以用到正文中的：
-1、传递函数的频率如果刚好在极点处，会带来3dB的功率下降（$10log10(P_o/P_i)$），并且有45°的相移。在10倍极点频率处的话会有90°相移和20dB的增益下降。如果在1/10频率处的话，也会有3~5度的相移影响。
+这一次，针对更高项，我们先考虑$b_2$，将$C_i$设为无穷值，考虑$C_j$，而将其他储能器件置零，如下图所示：
+![alt text](../resources/TTC-image-3.png)
+得到新的时间常数：$$\begin{equation}\tau_j^i=R_j^iC_j\end{equation}$$
+在这种情况下，式（8）可以表示为：
+$$\begin{equation}\begin{aligned}
+H(s)|_{C_i\to\infty}=\frac{C_is\cdot\left(\alpha_1^i+\alpha_2^{ij}C_js\right)}{C_is\cdot\left(\beta_1^i+\beta_2^{ij}C_js\right)}=\frac{\alpha_1^i}{\beta_1^i}\cdot\frac{1+\frac{\alpha_2^{ij}}{\alpha_1^i}C_js}{1+\frac{\beta_2^{ij}}{\beta_1^i}C_js}
+\end{aligned}\end{equation}$$
+因此针对这个系统来说，依旧是一个一阶系统，而这个系统的时间常数正是式（17），因此不难得到$$\begin{equation}\beta_2^{ij}=\beta_1^iR_j^i=R_i^0R_j^i\end{equation}$$
+在$b_2$系数的计算中，我们可以有规律地更换储能器件，进而将全部的储能器件都包含进来，从而组成完整的$b_2$，这样可以得到：
+$$\begin{equation}b_2=\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}R_i^0C_iR_j^iC_j=\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\tau_i^0\tau_j^i\end{equation}$$
+需要注意的一点是，正如前面所说的，系数不能重复，组合不能重复，$\beta^{mn}_2=\beta^{nm}_2$，因此$$\begin{equation}\tau_i^0\tau_j^i=\tau_j^0\tau_i^j\end{equation}$$
+在实际计算的时候我们可以哪个方便用哪个
+
+而对$a_2$的计算，我们可以将$C_i,C_j$均设为$\infty$，而其他储能元件置0，则有：
+$$\begin{equation}H^{ij}\equiv H|_{\underset{i\neq j\neq k}{\operatorname*{\operatorname*{C_i,C_j\to\infty}}}}=\frac{\alpha_2^{ij}}{\beta_2^{ij}}\end{equation}$$
+由此解得：$\alpha_2^{ij}=R_i^0R_j^iH^{ij}$
+因此$$
+\begin{equation}\begin{aligned}
+a_2 & =\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}R_i^0C_iR_j^iC_jH^{ij}=\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\tau_i^0 \tau_j^i H^{ij}
+\end{aligned}\end{equation}
+$$
+
+将这种思想引入到更高项，可以得到：
+$$\begin{equation}b_n=\sum_i^{1\leqslant i<j<k}\sum_{j}^{...\leqslant N}\ldots\tau_i^0\tau_j^i\tau_k^{ij}\ldots\end{equation}$$
+$$\begin{equation}a_n=\sum_i^{1\leqslant i<}\sum_j^{j<k}\sum_{k\cdots}^{...\leqslant N}\ldots\tau_i^0\tau_j^i\tau_k^{ij}\ldots H^{ijk\ldots}\end{equation}$$
+
+总结来看，证明的思路就是将所有的储能元件置于无穷或0，然后只考虑1个储能元件的变化，这样从每次的分析来看，我们考虑的都是一阶系统！
+
+将这一结论用于电感也是一样：
+$$\begin{equation}\tau_i^{jk...}=C_iR_i^{jk...}\end{equation}$$
+$$\begin{equation}\tau_l^{mn...}=\frac{L_l}{R_l^{mn...}}\end{equation}$$
+需要注意的是，根据前面提到的系数组合不能重复的原则，我们有：
+$$\begin{equation}R_i^0R_j^iR_k^{ij}\ldots R_m^{ijk\ldots}=R_j^0R_k^j\ldots R_m^{jkl\ldots}R_i^{jkl\ldots}\end{equation}$$
+
+从推导$a_n,b_n$中我们可以看出，极点只与储能元件及其网络本身有关，而与输入输出端口无关（在实际求解时间常数时，输入和输出端口电压源短路，电流源开路）；而对于零点的求解，不仅与储能元件和网络本身有关，还与输入输出的端口类型及选择有关！
+
+## 5. 相关推论
+
+### 5.1 极点和零点个数判断
+
+从式（24）可以判断出系统的最高阶数，从而确定系统的极点个数：取决于可以为储能元件设置的最大独立初始条件数量
+而零点数量根据（25）可以看出，取决于最高阶非零传递常数$H^{ijk...}$，换句话说，电路中的零点数量等于在产生非零传输常数的同时，能够同时具有无限值的储能元件的最大数量。
+
+### 5.2 极点解耦
+
+正如前文式（14）提到的，极点数量和时间常数数量并不相等，也不符合一一对应的关系，但是当储能元件之间相互解耦的时候，这种一一对应的关系就成立了，也即当时间常数在其他储能元件的短路和开路的组合中不发生变化时：
+$$\begin{equation}\tau_N^0=\tau_N^i=\tau_N^{ij}=\cdots=\tau_N^{ij...m}\end{equation}$$
+对分子解耦的推导：
+![alt text](../resources/TTC-image-5.png)
+因此可以将$(1+\tau_N^0s)$解耦出来，这样的话极点和时间常数间就是一一对应的了，该概念可以推广到一组或多组时间常数，这些时间常数可以与其他时间常数解耦，但在内部是耦合的。
+
+### 5.3 无限值时间常数（IVT）
+
+根据式（3），针对带通系统，我们可以将其分解为高通部分+低通部分的组合
+$$
+H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}
+$$
+![alt text](../resources/TTC-image-6.png)
+高频部分（右边）的3dB点$w_n$可依据上文求得，而低频部分（左边）的3dB点$w_l$则需要通过无限值时间常数（IVT）求得
+
+假设其余零点均离$w_l$很远，那么左边部分的高通部分传递函数可以表示为：
+$$
+\begin{equation}\begin{gathered}
+H(s)
+\begin{aligned}
+\approx\frac{a_ns^n}{1+b_1s+b_2s^2+\ldots+b_ns^n}
+\end{aligned} \\
+\Large=\frac{a_{mid}}{1+\frac{b_{n-1}}{b_ns}+\ldots+\frac{1}{b_ns^n}}
+\approx \frac{a_{mid}}{1+\frac{b_{n-1}}{b_ns}}\end{gathered}\end{equation}
+$$
+$a_{mid}=a_n/b_n$代表带通增益，而$w_l$的主导项是$b_{n-1}/b_n$，因此可以解得：
+$$
+\begin{equation}\begin{gathered}
+\omega_{l}\Large\approx\frac{b_{n-1}}{b_n}
+=\frac{1}{\tau_1^{23...n}}+\frac{1}{\tau_2^{13...n}}+\ldots+\frac{1}{\tau_n^{12...(n-1)}}\\=\sum_{i=1}^N\frac{1}{\tau_i^\infty}
+\end{gathered}\end{equation}
+$$
+这代表，针对带通系统，低频处的零点$w_l$可根据IVT进行估计，而$\tau_i^{\infty}$代表的是$\tau_i^{12...(i-1)(i+1)...n}$，零点的计算是考虑所有无限值时间常数的倒数和，对于电容和电感来说：
+$$
+\begin{equation}\tau_i^\infty=C_iR_i^\infty\end{equation}
+$$
+$$
+\begin{equation}\tau_l^\infty=\frac{L_l}{R_l^\infty}\end{equation}
+$$
+
+## 6. 应用
+
+### 6.1 共射级电路
+
+共射级电路如下图所示，共有三个电容$C_{\mu},C_{\pi},C_L$
+其直流增益：$a_0=H^0=-g_mR_2\cdot\frac{r_\pi}{r_\pi+R_1}$
+![alt text](../resources/TTC-image-7.png)
+在实际进行分析频率特性前，我们可以先判断电路中共有几个极点和几个零点，判断思路如下进行：
+
++ 由于电路中共有3个电容，所以最多可以引入3个极点和3个零点
++ 先判断极点：
+  + 可以给$C_{\pi}$和$C_L$设一个初始条件，如$C_{\pi}$的电压为1V，$C_L$的电压为10V，那么$C_{\mu}$的电压就已经固定了（9V），不能再为其设置初始条件，所以虽然有3个电容，但是总共只能设置2个初始条件，也就是说只有2个极点，虽然可以有3个时间常数
++ 再来判断零点：
+  + 分别让$C_{\mu},C_{\pi},C_L$趋于无穷，可以发现只有在$C_{\mu} \rightarrow\infty$的时候，输出不为0，且输入和输出并不反相，因此可以得知电路中只有一个右半平面零点
++ 所以该电路有2个极点，1个零点
++ 如果要精确计算，我们需要计算的是$a_0,a_1,b_1,b_2$
+
+**计算$b_1$：**
+根据公式（14），我们可以分别求得：
+$$
+\tau_\pi^0=C_\pi R_\pi^0=C_\pi(R_1\|r_\pi)\\
+\tau_\mu^0=C_\mu R_\mu^0=C_\mu\left[R_1\|r_\pi+R_2+g_m(R_1\|r_\pi)R_2\right]\\
+\tau_L^0=C_LR_L^0=C_LR_2
+$$
+所以可得：
+$$
+b_1=\sum_i\tau_i^0=\tau_\pi^0+\tau_\mu^0+\tau_L^0
+$$
+
+**计算$b_2$：**
+根据公式（20）可以计算$b_2$，$b_2$的表达式可以为
+$$
+b_2=\tau_{\pi}^0\tau_{\mu}^{\pi}+\tau_{\pi}^0\tau_{L}^{\pi}+\tau_{\mu}^0\tau_{L}^{\mu}=\tau_{L}^0\tau_{\mu}^{L}+\tau_{L}^0\tau_{\pi}^{L}+\tau_{\pi}^0\tau_{\mu}^{\pi}
+$$
+根据求$b_1$时候的公式，我们可知$\tau_{\mu}^0$公式非常复杂，所以在求解时，我们尽量避开，因此采用后面一种表达式
+
+计算之后不难得出：
+$$
+\tau_{\mu}^L=(R_1\|r_\pi)C_{\mu}\\
+\tau_{\pi}^L=(R_1\|r_\pi)C_{\pi}\\
+\tau_{\mu}^{\pi}=R_2C_{\mu}
+$$
+因此解得：$$b_2=\begin{aligned}
+(r_\pi\|R_1)R_2\cdot(C_\pi C_\mu+C_\pi C_L+C_\mu C_L)
+\end{aligned}$$
+
+**计算$a_1$：**
+根据式（16）及前文分析可知，我们只需要计算$H^{\mu}$即可
+$$
+H^{\mu}=\frac{r_{\pi}\|1/g_m\|R_2}{R_1+r_{\pi}\|1/g_m\|R_2}
+$$
+
+因此我们可以求得整个式子为：$$H(s)=H^0\cdot\frac{1+\frac{H^\mu}{H^0}\tau s}{1+b_1s+b_2s^2}=H^0\cdot\frac{1-\frac{C_\mu}{g_m}s}{1+b_1s+b_2s^2}$$
+
+由此可解出相应的零点和极点
+
+### 6.2 Cascode电路
+
+![alt text](../resources/TTC-image-8.png)
+
+## 一些补充
+
+1、在考虑相位裕度的时候，如果传递函数的频率如果刚好在极点处，会带来3dB的功率下降（$10log10(P_o/P_i)$），并且有45°的相移。在10倍极点频率处的话会有90°相移和20dB的增益下降。如果在1/10频率处的话，也会有3~5度的相移影响。
