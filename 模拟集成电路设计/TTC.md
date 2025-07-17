@@ -24,18 +24,13 @@
 值得注意的是$Y(s)=1/Z(s)$，所以在放置测试源的时候我们需要注意到底想要的是导纳还是阻抗，二者之间的零极点相反。
 
 传递函数的一般表达式如下所示：
-$$\begin{equation}
-H(s)=\frac{a_0+a_1s+a_2s^2+\ldots+a_ms^m}{1+b_1s+b_2s^2+\ldots+b_ns^n}
-\end{equation}$$
+$$\begin{equation}H(s)=\frac{a_0+a_1s+a_2s^2+\ldots+a_ms^m}{1+b_1s+b_2s^2+\ldots+b_ns^n}\end{equation}$$
 
 系数$a_{i},b_{j}$都是实数，$s$代表复频率$jw$，$a_0$是电路的DC传递函数，很多时候代表了电路的直流增益
 
 根据基本代数原理，可以将式(1)改写为：
 
-$$
-\begin{equation}
-H(s)=a_0\cdot\frac{\left(1-\frac{s}{z_1}\right)\left(1-\frac{s}{z_2}\right)\cdots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_1}\right)\left(1-\frac{s}{p_2}\right)\cdots\left(1-\frac{s}{p_n}\right)}
-\end{equation}$$
+$$\begin{equation}H(s)=a_0\cdot\frac{\left(1-\frac{s}{z_1}\right)\left(1-\frac{s}{z_2}\right)\cdots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_1}\right)\left(1-\frac{s}{p_2}\right)\cdots\left(1-\frac{s}{p_n}\right)}\end{equation}$$
 
 $a_0$代表直流增益，$p_i$代表极点(pole)，$z_j$代表零点(zero)，并且极点和零点总是以实数或者共轭复数形式出现
 
@@ -52,10 +47,7 @@ $a_0$代表直流增益，$p_i$代表极点(pole)，$z_j$代表零点(zero)，�
 但如果遇到带通系统或者高通系统的话这么描述就不合理了。
 针对带通系统来说，可以改写为下式：
 
-$$
-\begin{equation}
-H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}
-\end{equation}$$
+$$\begin{equation}H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}\end{equation}$$
 
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-1.png?raw=true)
 
@@ -73,9 +65,7 @@ $a_{mid}$代表了带通传递函数的中频增益，$a_{mid}$的左半部分�
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-4.png?raw=true)
 
 一个储能元件对系统的影响是可能同时引入一个零点和极点（是否真的存在还需要具体电路具体分析），一阶系统的传递函数可以表示为：
-$$\begin{equation}
-H(s)=\frac{a_0+a_1s}{1+b_1s}
-\end{equation}$$
+$$\begin{equation}H(s)=\frac{a_0+a_1s}{1+b_1s}\end{equation}$$
 
 式（4）中$a_0$代表低频传递函数，极点$p=-\frac{1}{b_1}$，将$b_1$称为极点时间常数(pole time constant)，$\tau\equiv b_{1}$，零点$z=-\frac{a_0}{a_1}$
 
@@ -102,13 +92,9 @@ $$\tau_1\equiv R_1^0C_1=b_1$$
 $$\tau_1\equiv\frac{L_1}{R_1^0}$$
 
 由于电容总是与*s*同时出现，所以传递函数的形式可以再次改写为以下形式：
-$$\begin{equation}
-H(s)=\frac{a_{0}+\alpha_{1}C_{1}s}{1+\beta_{1}C_{1}s}
-\end{equation}$$
+$$\begin{equation}H(s)=\frac{a_{0}+\alpha_{1}C_{1}s}{1+\beta_{1}C_{1}s}\end{equation}$$
 其中$\beta_1=R_1^0$，当*s*趋于无穷时，有：
-$$\begin{equation}
-H^1\equiv H|_{C_1\to\infty}=\frac{\alpha_1}{\beta_1}
-\end{equation}$$
+$$\begin{equation}H^1\equiv H|_{C_1\to\infty}=\frac{\alpha_1}{\beta_1}\end{equation}$$
 $H^1$的上标1代表了电容$C_1$的值趋于无穷，在电路中表现为短路，联立式（4）（5）（6）可以得到：
 $$a_1=\alpha_1C_1=R_1^0C_1H^1=\tau_1H^1$$
 
@@ -130,9 +116,7 @@ H(s)=\frac{H^{0}+\tau_{1}H^{1}s}{1+\tau_{1}s}
 任何具有储能元件的系统，都可以表示为下图所示的电路框图：
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image.png?raw=true)
 从一种直观的理解上可以看到，电路的传递函数中系数*s*出现的唯一方式是作为电容器或电感器的乘法因子，如$C_is,L_is$，因此$b_1$肯定是电路中所有储能元件的线性组合，而不能用例如$C_iC_j$形式的出现，因为这会引入$s^2$。从这个角度可以推断出，$b_k$代表是$s^k$肯定是*k*个不同储能元件相乘的非重复线性组合，这种观点对于分子$a_k$也适用。因此可将传递函数改写为下式：
-$$\begin{equation}\begin{aligned}
-H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}
-\end{aligned}\end{equation}$$
+$$\begin{equation}\begin{aligned}H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}\end{aligned}\end{equation}$$
 推导系数$\alpha,\beta$的基本思想是为储能元件选择一组极值（零和无穷大，或者等效地开路和短路），以便我们能够以一种方式隔离并表达参数。
 
 #### 4.1.1 $b_1$的推导
@@ -160,20 +144,15 @@ $$\begin{equation}b_{1}=-\sum_{i=1}^{N^{\prime}}\frac{1}{p_{i}}=\sum_{i=1}^{N}\t
 #### 4.1.2 $a_1$的推导
 
 分子中$a_1$的确定可以用来估计零点，采用与推导$b_1$相类似的方法，当电路中其他储能元件设为0，而$C_{i}\rightarrow\infty$时，式（8）可化简为：
-$$
-\begin{equation}H^i\equiv H|_{
-\begin{array}
-{l}C_i\to\infty \\
+$$\begin{equation}H^i\equiv H|_{\begin{array}{l}C_i\to\infty \\
 C_j=0 \\
-i\neq j
-\end{array}}=\frac{\alpha_1^i}{\beta_1^i}\end{equation}
-$$
+i\neq j\end{array}}=\frac{\alpha_1^i}{\beta_1^i}\end{equation}$$
 根据式（11），我们可以得到：$\alpha_{1}^{i}=R_{i}^{0}H^{i}\rightarrow\alpha_1^iC_i=R_i^0C_iH^i=\tau_i^0H^i$
 
 将公式推广到所有储能元件，即有：
 $$\begin{equation}a_1=\sum_{i=1}^N\tau_i^0H^i\end{equation}$$
 式中$\tau_i^0$可以和求$b_1$的时候一样，通过求解ZVT即可，而对于$H^i$的求解也很简单，将第$i$个储能器件的值设为$\infty$，而其他储能器件全部置零即可，然后求此时系统的传递函数：
-![alt text]([../resources/TTC-image-2.png](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-2.png?raw=true))
+![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-2.png?raw=true)
 
 判断单个储能元件是否引入了零点很简单，只需要通过观察储能器件（电容短路或是电感开路），判断传递函数是否为0即可，若传递函数为0，则代表该储能元件没有引入零点；若传递函数非0，则代表该储能元件引入了一个零点，如果传递函数的正负属性与直流传递函数($H^0$)相反，则还代表引入的是一个右半平面零点
 
@@ -181,9 +160,7 @@ $$\begin{equation}a_1=\sum_{i=1}^N\tau_i^0H^i\end{equation}$$
 在前面的章节中，我们只分析了一阶系统或者是只考虑了一阶项（$a_1,b_1$）的传递函数，在本章中，我们会逐渐将传递函数的表达式推广到高阶项，从而供读者解出具有任意精度的传递函数，读者可在任意阶处终止分析，从而得到符合自己个性化需求的传递函数
 
 在这里重写式（8）：
-$$\begin{aligned}
-H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}
-\end{aligned}$$
+$$\begin{aligned}H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}\end{aligned}$$
 并做以下声明：
 对于高阶项来说，为了避免相同电容的重复排列，有：$\alpha^{mn}_2=\alpha^{nm}_2,\beta^{mn}_2=\beta^{nm}_2$，更高项($\alpha^{ijk...}_l,\beta^{ijk...}_l$)也一样
 
@@ -191,9 +168,7 @@ H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqsla
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-3.png?raw=true)
 得到新的时间常数：$$\begin{equation}\tau_j^i=R_j^iC_j\end{equation}$$
 在这种情况下，式（8）可以表示为：
-$$\begin{equation}\begin{aligned}
-H(s)|_{C_i\to\infty}=\frac{C_is\cdot\left(\alpha_1^i+\alpha_2^{ij}C_js\right)}{C_is\cdot\left(\beta_1^i+\beta_2^{ij}C_js\right)}=\frac{\alpha_1^i}{\beta_1^i}\cdot\frac{1+\frac{\alpha_2^{ij}}{\alpha_1^i}C_js}{1+\frac{\beta_2^{ij}}{\beta_1^i}C_js}
-\end{aligned}\end{equation}$$
+$$\begin{equation}\begin{aligned}H(s)|_{C_i\to\infty}=\frac{C_is\cdot\left(\alpha_1^i+\alpha_2^{ij}C_js\right)}{C_is\cdot\left(\beta_1^i+\beta_2^{ij}C_js\right)}=\frac{\alpha_1^i}{\beta_1^i}\cdot\frac{1+\frac{\alpha_2^{ij}}{\alpha_1^i}C_js}{1+\frac{\beta_2^{ij}}{\beta_1^i}C_js}\end{aligned}\end{equation}$$
 因此针对这个系统来说，依旧是一个一阶系统，而这个系统的时间常数正是式（17），因此不难得到$$\begin{equation}\beta_2^{ij}=\beta_1^iR_j^i=R_i^0R_j^i\end{equation}$$
 在$b_2$系数的计算中，我们可以有规律地更换储能器件，进而将全部的储能器件都包含进来，从而组成完整的$b_2$，这样可以得到：
 $$\begin{equation}b_2=\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}R_i^0C_iR_j^iC_j=\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\tau_i^0\tau_j^i\end{equation}$$
@@ -241,9 +216,7 @@ $$\begin{equation}\tau_N^0=\tau_N^i=\tau_N^{ij}=\cdots=\tau_N^{ij...m}\end{equat
 ### 5.3 无限值时间常数（IVT）
 
 根据式（3），针对带通系统，我们可以将其分解为高通部分+低通部分的组合
-$$
-H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}
-$$
+$$H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}$$
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-6.png?raw=true)
 高频部分（右边）的3dB点$w_n$可依据上文求得，而低频部分（左边）的3dB点$w_l$则需要通过无限值时间常数（IVT）求得
 
