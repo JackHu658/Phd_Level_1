@@ -331,7 +331,64 @@ $$
 ### 6.2 Cascode电路
 
 ![alt text](../resources/TTC-image-8.png)
+不难看出：$C_e=C_{c1}+C_{\pi 2},C_L=C_{\mu 2}+C_{c2}+C_o$
+因此我们仅需分析4个电容即可
+电路中对4个电容总共可以设置3个初始条件，所以有3个极点
+而$C_{\mu1}\rightarrow \infty$后，输出不为0，因此有1个零点且位于右半平面
+
+**计算$b_1$：**
+$$\tau_{\pi1}^0=C_{\pi 1}(R_1\|r_{\pi})\\
+\tau_{\mu 1}^0=C_{\mu 1}[(R_1\|r_{\pi})+r_m+g_mr_m(R_1\|r_{\pi})]\approx C_{\mu 1}[2(R_1\|r_{\pi})+r_m]\\
+\tau_{e}^0=C_er_m\\
+\tau_L^0=C_LR_2
+$$
+从这个计算中可以看出,$\tau_{\mu 1}^0$是主导因素，3dB带宽可以直接通过$1/\tau_{\mu 1}^0$来估计；而$\tau_L^0$与另外三个时间常数解耦（即无论另外三个电容处于短路还是开路状态，$\tau_L^0$均不变），因此最终表达式可以写成：
+$$H(s)=H^0\cdot\frac{1+\frac{a_1}{a_0}s}{(1+b_1^{\prime}s+b_2^{\prime}s^2)}\cdot\frac{1}{1+\tau_L^0s}$$
+因此在我们后续计算$b_2^{\prime}，a_1^{\prime}$的时候，均不用考虑电容$C_L$
+而$b_1^{\prime}=\tau_{\pi1}^0+\tau_{\mu 1}^0+\tau_{e}^0$
+
+**计算$b_2^{\prime}$：**
+对于$b_2^{\prime}$的计算，不需要再关注电容$C_L$，这里直接视为开路
+因为$\tau_{\pi1}^0,\tau_{e}^0$较为简单，所以计算$b_2^{\prime}$时用下式：
+$$
+b_2^{\prime}=\tau_{\pi1}^0\tau_{\mu1}^{\pi1}+\tau_{\pi1}^0\tau^{\pi1}_e+\tau_{e}^0\tau^{e}_{\mu 1}=r_m(R_1\|r_{\pi})(C_{\pi1}C_{\mu 1}+C_{\pi1}C_e+C_{\mu 1}C_e)
+$$
+
+**计算$a_0$：**
+$a_0$代表了低频增益，将所有电容视为开路，有：$$a_0=-g_mR_2\frac{r_{\pi}}{r_{\pi}+R_1}$$
+
+**计算$a_1$：**
+$a_1$主要由电容$C_{\mu 1}$引入，根据公式（16），只需要计算$H^{\mu 1}$即可:
+$$H^{\mu 1}\approx \frac{\frac{r_m\|r_m\|r_{\pi}}{R_1+r_m\|r_m\|r_{\pi}}}{r_m}R_2$$
+因此可解得$$a_1=H^{\mu 1}\tau_{\mu 1}^0\rightarrow\frac{a_1}{a_0}=\frac{H^\mu\tau_\mu^0}{H^0}=-\frac{C_\mu}{g_m}$$
+
+这代表系统有一个右半平面零点
+
+### 6.3 源随器的输入阻抗
+
+如下图a)所示：因为直接求解输入阻抗会出现有些值趋于无穷，不太好表示，所以在这里我们选择求解输入导纳，将输入导纳取倒数即可得到输入阻抗
+![alt text](../resources/TTC-image-9.png)
+
+在源随器的输入处施加一个电压源，通过测得输入电流得到输入导纳：
+很容易通过分析得到：$Y^0=0,Y^{\pi}=0,Y^L=0,Y^{\pi L}=\infty$，而又由于$\tau_L^{\pi}=\tau_{\pi}^L=0$，因此我们得不到一个输入导纳的表达式
+
+这个问题可以通过引入一个电阻$r_x$解决，这样$$Y^{\pi L}=\frac{1}{r_x}$$
+而$$\tau_{\pi}^0=C_{\pi}r_m\\\tau_L^0=C_L(r_m+r_x)\\\tau_{L}^{\pi}=r_xC_L$$
+
+因此最终可求得导纳表达式为：
+$$Y(s)|_{r_x\rightarrow 0}=\frac{r_mC_1C_2s^2}{1+r_m(C_\pi+C_L)s}$$
+
+将这个导纳表达式翻转一下就是阻抗表达式：
+$$Z(s)=\frac{1}{Y(s)}=\frac{g_m}{C_\pi C_Ls^2}+\frac{1}{(C_\pi\|C_L)s}$$
 
 ## 一些补充
 
 1、在考虑相位裕度的时候，如果传递函数的频率如果刚好在极点处，会带来3dB的功率下降（$10log10(P_o/P_i)$），并且有45°的相移。在10倍极点频率处的话会有90°相移和20dB的增益下降。如果在1/10频率处的话，也会有3~5度的相移影响。
+
+## 参考文献
+
+1.A. Hajimiri, "Generalized Time- and Transfer-Constant Circuit Analysis," in IEEE Transactions on Circuits and Systems I: Regular Papers, vol. 57, no. 6, pp. 1105-1121, June 2010.
+2.郑立博, 解昊炜, 郭宇锋, 刘轶. 一种基于广义时间和传递常数的快速分析法[J]. 微电子学, 2023, 53(1): 81-88.
+
+味大，无需多盐
+![alt text](../resources/TTC-image-10.png)
