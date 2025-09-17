@@ -3,6 +3,7 @@
 ## 文献
 
 1.A. Hajimiri, "Generalized Time- and Transfer-Constant Circuit Analysis," in IEEE Transactions on Circuits and Systems I: Regular Papers, vol. 57, no. 6, pp. 1105-1121, June 2010.
+
 2.郑立博, 解昊炜, 郭宇锋, 刘轶. 一种基于广义时间和传递常数的快速分析法[J]. 微电子学, 2023, 53(1): 81-88.
 
 ## 1.简单介绍
