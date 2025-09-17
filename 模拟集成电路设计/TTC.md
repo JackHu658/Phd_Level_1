@@ -1,7 +1,9 @@
 # Time and Transfer Constant(TTC) Theory
 
-方法提出者：
-![哈基米](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/hajimi.gif?raw=true)
+## 文献
+
+1.A. Hajimiri, "Generalized Time- and Transfer-Constant Circuit Analysis," in IEEE Transactions on Circuits and Systems I: Regular Papers, vol. 57, no. 6, pp. 1105-1121, June 2010.
+2.郑立博, 解昊炜, 郭宇锋, 刘轶. 一种基于广义时间和传递常数的快速分析法[J]. 微电子学, 2023, 53(1): 81-88.
 
 ## 1.简单介绍
 
@@ -357,11 +359,3 @@ $$Z(s)=\frac{1}{Y(s)}=\frac{g_m}{C_\pi C_Ls^2}+\frac{1}{(C_\pi\|C_L)s}$$
 ## 一些补充
 
 1、在考虑相位裕度的时候，如果传递函数的频率如果刚好在极点处，会带来3dB的功率下降（$10log10(P_o/P_i)$），并且有45°的相移。在10倍极点频率处的话会有90°相移和20dB的增益下降。如果在1/10频率处的话，也会有3~5度的相移影响。
-
-## 参考文献
-
-1.A. Hajimiri, "Generalized Time- and Transfer-Constant Circuit Analysis," in IEEE Transactions on Circuits and Systems I: Regular Papers, vol. 57, no. 6, pp. 1105-1121, June 2010.
-2.郑立博, 解昊炜, 郭宇锋, 刘轶. 一种基于广义时间和传递常数的快速分析法[J]. 微电子学, 2023, 53(1): 81-88.
-
-味大，无需多盐
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-10.png?raw=true)
