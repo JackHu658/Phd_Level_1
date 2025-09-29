@@ -77,6 +77,7 @@ $$\begin{cases}
 而在A图中$$V(\mathrm{A})-V(\mathrm{B})=V_{\mathrm{int}}-V_{\mathrm{inc}}$$
 因为交叉耦合对的存在，致使符号发生了反转，而电阻$R_1$的存在又使得环路增益离开了1这个点，从而避免了可能的不稳定（正反馈回路增益需要小于1）
 这个电路的阻抗为：$$Z_{in}=\frac{v_t}{i_t}=-R-\frac{2}{g_{m1,2}}$$
+求法可以用两个R/2的电阻的等效分开求，如图（b）所示，也可以直接用电阻R横跨在中间整体求，通过消去$-\frac{2}{g_{m1,2}}$即可
 ![alt text](<Pictures/Who’s Afraid of Positive Feedback-image-7.png>)
 若将$M_1,M_2$接成二极管形式，则二极管接法的MOS管和下方交叉耦合对的负阻抗形成抵消，最终只剩下电阻R，消除MOS管引起的非线性
 ![alt text](<Pictures/Who’s Afraid of Positive Feedback-image-8.png>)
