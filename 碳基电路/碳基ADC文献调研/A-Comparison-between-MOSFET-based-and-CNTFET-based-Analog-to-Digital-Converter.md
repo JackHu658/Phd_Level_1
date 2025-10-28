@@ -10,7 +10,6 @@
 
 注意：==碳纳米管的宽度无法通过改变来提高电流驱动能力，因为一旦生长完成，其直径就固定了——只能通过并联更多根碳纳米管==
 
-
 ![使用运放当作比较器](<Pictures/A Comparison between MOSFET based and CNTFET based Analog to Digital Converter-image.png>)
 二级运放用来当比较器使用，开环下用——有缺点，速度上并不合适，有回滞，无法很快的跟随输入的变化而变——用动态比较器来替代是个好方法
 
