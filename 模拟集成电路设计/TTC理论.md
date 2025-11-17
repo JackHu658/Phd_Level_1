@@ -7,13 +7,13 @@
 
 ## 1.简单介绍
 
-在一般情况下，针对复杂的电路图，如果要用传递函数去分析他的幅频特性，KCL/KVL是分析的首选，但是如果电路过于复杂，计算量十分庞大，不仅要保证计算的过程中不出错（不老眼昏花），还要保证手算的结果化简、合并起来显得合理（这种分析只能到最后再去近似，而不能中途近似，否则结果可能会出现巨大偏差）。很多时候这需要靠Mathematica软件去进行符号运算，在传统的教材书中，也有很多例如开路时间常数（OCT）、短路时间常数（SCT）法进行化简的方法，但是并不普适，并没有将电感也包含进来（尽管大多数电路中只会有电容）。哪怕最终结果的代数表达式已经求出，也很难从中洞察出最需改进的点，
+在一般情况下，针对复杂的电路图，如果要用传递函数去分析他的幅频特性，KCL/KVL是分析的首选，但是如果电路过于复杂，计算量十分庞大，不仅要保证计算的过程中不出错（不老眼昏花），还要保证手算的结果化简、合并起来显得合理（这种分析只能到最后再去近似，而不能中途近似，否则结果可能会出现巨大偏差）。很多时候这需要靠Mathematica软件去进行符号运算。尽管如此，最后求解出来的传递函数也可能会很复杂，并不能够很直观的看出优化的主导因素。在传统的教材书中，也有很多例如开路时间常数（OCT）、短路时间常数（SCT）法进行化简的方法，但是并不普适，并没有将电感也包含进来（尽管大多数电路中只会有电容）。哪怕最终结果的代数表达式已经求出，也很难从中洞察出最需改进的点，
 
-基于此，伟大的哈基米提出了一种Time and Transfer Constant（TTC）的方法，下文是我的一些总结。
+基于此，Hajimiri提出了一种Time and Transfer Constant（TTC）的方法
 
 ## 2. 传递函数的基本性质
 
-对于单输入单输出的线性时不变网络来说，传递函数可以被定义为电路的任意两个电压/电流之比（V/V, V/I(阻抗Z), I/V(导纳Y), I/I）。
+对于单输入单输出的线性时不变网络来说，传递函数可以被定义为电路的任意两个端口（包括同一端口）电压/电流之比（$Voltage \ gain=V/V$, $Z=V/I$, $Y=I/V$, $Current \ gain=I/I$）。
 
 若输入输出均为电压，则传递函数可以表示为：$H(s)\equiv v_o(s)/v_i(s)$
 代表了电压的增益
@@ -29,6 +29,8 @@
 $$\begin{equation}H(s)=\frac{a_0+a_1s+a_2s^2+\ldots+a_ms^m}{1+b_1s+b_2s^2+\ldots+b_ns^n}\end{equation}$$
 
 系数$a_{i},b_{j}$都是实数，$s$代表复频率$jw$，$a_0$是电路的DC传递函数，很多时候代表了电路的直流增益
+
+==注意==：在特殊情况下，分子的**1**也可能不存在，比如在传统的积分电路中，$H(s)=\frac{1}{s}$，这时候分母在计算的时候趋于无穷，可以根据求倒数的方式，将极点变成零点来求
 
 根据基本代数原理，可以将式(1)改写为：
 
@@ -53,7 +55,7 @@ $$\begin{equation}H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k
 
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-1.png?raw=true)
 
-$a_{mid}$代表了带通传递函数的中频增益，$a_{mid}$的左半部分的极点和零点数一定要相等，不然中频段的增益不会是平的，左边的极点和零点分别称为反极点*inverse pole*和反零点*inverse zero*
+$a_{mid}$代表了带通传递函数的中频增益，$a_{mid}$的左半部分的极点和零点数一定要相等，不然中频段的增益不会是平的，左边的极点和零点分别称为反极点*inverse pole*和反零点*inverse zero*，反极点和反零点的幅频曲线与零极点相==镜像==；相频曲线相同（但左半平面的逆零点是从-90度增到0度；左半平面的逆极点是从90度到0度）
 ![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-2.png?raw=true)
 
 2、根据式（1）和式（2）可以将分子和分母的系数($a_i,b_j$）均用极点和零点表示出来：
@@ -116,7 +118,7 @@ H(s)=\frac{H^{0}+\tau_{1}H^{1}s}{1+\tau_{1}s}
 
 首先先分析公式（1）中的$a_1$与$b_1$
 任何具有储能元件的系统，都可以表示为下图所示的电路框图：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image.png?raw=true)
+![alt text](Pictures/TTC理论-image.png)
 从一种直观的理解上可以看到，电路的传递函数中系数*s*出现的唯一方式是作为电容器或电感器的乘法因子，如$C_is,L_is$，因此$b_1$肯定是电路中所有储能元件的线性组合，而不能用例如$C_iC_j$形式的出现，因为这会引入$s^2$。从这个角度可以推断出，$b_k$代表是$s^k$肯定是*k*个不同储能元件相乘的非重复线性组合，这种观点对于分子$a_k$也适用。因此可将传递函数改写为下式：
 $$\begin{equation}\begin{aligned}H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\alpha_2^{ij}C_iC_j\right)s^2+\ldots}{1+\left(\sum_{i=1}^N\beta_1^iC_i\right)s+\left(\sum_i^{1\leqslant i}\sum_j^{<j\leqslant N}\beta_2^{ij}C_iC_j\right)s^2+\ldots}\end{aligned}\end{equation}$$
 推导系数$\alpha,\beta$的基本思想是为储能元件选择一组极值（零和无穷大，或者等效地开路和短路），以便我们能够以一种方式隔离并表达参数。
@@ -124,7 +126,7 @@ $$\begin{equation}\begin{aligned}H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC
 #### 4.1.1 $b_1$的推导
 因为公式（8）的普适性，对于无论是零值还是无穷大值的储能系统均适用，因此我们先考虑一种简单的情况——即整个电路中只有单一电容$C_i$，因此其遵循一阶系统的传递函数表达式：
 $$\begin{equation}H_i(s)=\frac{a_0+\alpha_1^iC_is}{1+\beta_1^iC_is}\end{equation}$$
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-1.png?raw=true)
+![alt text](Pictures/TTC理论-image-1.png)
 图中可以看到，这个时候对于电容来说就是开路，对于电感来说就是短路
 从式（7）中我们已经推导出了
 $$\begin{equation}\tau_i^0=R_i^0C_i\end{equation}$$
@@ -145,18 +147,21 @@ $$\begin{equation}b_{1}=-\sum_{i=1}^{N^{\prime}}\frac{1}{p_{i}}=\sum_{i=1}^{N}\t
 
 #### 4.1.2 $a_1$的推导
 
+![alt text](Pictures/TTC理论-image-2.png)
 分子中$a_1$的确定可以用来估计零点，采用与推导$b_1$相类似的方法，当电路中其他储能元件设为0，而$C_{i}\rightarrow\infty$时，式（8）可化简为：
 $$\begin{equation}H^i\equiv H|_{\begin{array}{l}C_i\to\infty \\
 C_j=0 \\
 i\neq j\end{array}}=\frac{\alpha_1^i}{\beta_1^i}\end{equation}$$
-根据式（11），我们可以得到：$\alpha_{1}^{i}=R_{i}^{0}H^{i}\rightarrow\alpha_1^iC_i=R_i^0C_iH^i=\tau_i^0H^i$
+根据式（11），我们可以得到：$\alpha_{1}^{i}=R_{i}^{0}H^{i}\rightarrow a_1 ^i=\alpha_1^iC_i=R_i^0C_iH^i=\tau_i^0H^i$
 
 将公式推广到所有储能元件，即有：
 $$\begin{equation}a_1=\sum_{i=1}^N\tau_i^0H^i\end{equation}$$
-式中$\tau_i^0$可以和求$b_1$的时候一样，通过求解ZVT即可，而对于$H^i$的求解也很简单，将第$i$个储能器件的值设为$\infty$，而其他储能器件全部置零即可，然后求此时系统的传递函数：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-2.png?raw=true)
+式中$\tau_i^0$可以和求$b_1$的时候一样，通过求解ZVT即可，而对于$H^i$的求解也很简单，将第$i$个储能器件的值设为$\infty$，而其他储能器件全部置零即可，然后求此时系统的传递函数
 
-判断单个储能元件是否引入了零点很简单，只需要通过观察储能器件（电容短路或是电感开路），判断传递函数是否为0即可，若传递函数为0，则代表该储能元件没有引入零点；若传递函数非0，则代表该储能元件引入了一个零点，如果传递函数的正负属性与直流传递函数($H^0$)相反，则还代表引入的是一个右半平面零点
+最后可以得出结论，如果将高阶系统只估计到一阶，那么传递函数的表达式为：
+$$H(s)=\frac{H^0+(\sum_{i=1}^N\tau_i^0H^i)s}{1+(\sum_{i=1}^N\tau_i^0)s}$$
+
+判断单个储能元件是否引入了零点很简单，只需要通过观察储能器件（电容短路或是电感开路），判断传递函数是否为0即可，若传递函数为0（$H^i=0$），则代表该储能元件没有引入零点；若传递函数非0（$H^i\neq 0$），则代表该储能元件引入了一个零点，如果传递函数的正负属性与直流传递函数($H^0$)相反，则还代表引入的是一个右半平面零点
 
 ### 4.2 高阶项的时间和传递常数（TTC）分析
 在前面的章节中，我们只分析了一阶系统或者是只考虑了一阶项（$a_1,b_1$）的传递函数，在本章中，我们会逐渐将传递函数的表达式推广到高阶项，从而供读者解出具有任意精度的传递函数，读者可在任意阶处终止分析，从而得到符合自己个性化需求的传递函数
@@ -167,7 +172,7 @@ $$\begin{aligned}H(s)= & \frac{a_0+\left(\sum_{i=1}^N\alpha_1^iC_i\right)s+\left
 对于高阶项来说，为了避免相同电容的重复排列，有：$\alpha^{mn}_2=\alpha^{nm}_2,\beta^{mn}_2=\beta^{nm}_2$，更高项($\alpha^{ijk...}_l,\beta^{ijk...}_l$)也一样
 
 这一次，针对更高项，我们先考虑$b_2$，将$C_i$设为无穷值，考虑$C_j$，而将其他储能器件置零，如下图所示：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-3.png?raw=true)
+![alt text](Pictures/TTC理论-image-3.png)
 得到新的时间常数：$$\begin{equation}\tau_j^i=R_j^iC_j\end{equation}$$
 在这种情况下，式（8）可以表示为：
 $$\begin{equation}\begin{aligned}H(s)|_{C_i\to\infty}=\frac{C_is\cdot\left(\alpha_1^i+\alpha_2^{ij}C_js\right)}{C_is\cdot\left(\beta_1^i+\beta_2^{ij}C_js\right)}=\frac{\alpha_1^i}{\beta_1^i}\cdot\frac{1+\frac{\alpha_2^{ij}}{\alpha_1^i}C_js}{1+\frac{\beta_2^{ij}}{\beta_1^i}C_js}\end{aligned}\end{equation}$$
@@ -212,14 +217,16 @@ $$\begin{equation}R_i^0R_j^iR_k^{ij}\ldots R_m^{ijk\ldots}=R_j^0R_k^j\ldots R_m^
 正如前文式（14）提到的，极点数量和时间常数数量并不相等，也不符合一一对应的关系，但是当储能元件之间相互解耦的时候，这种一一对应的关系就成立了，也即当时间常数在其他储能元件的短路和开路的组合中不发生变化时：
 $$\begin{equation}\tau_N^0=\tau_N^i=\tau_N^{ij}=\cdots=\tau_N^{ij...m}\end{equation}$$
 对分子解耦的推导：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-5.png?raw=true)
+![alt text](Pictures/TTC理论-image-4.png)
 因此可以将$(1+\tau_N^0s)$解耦出来，这样的话极点和时间常数间就是一一对应的了，该概念可以推广到一组或多组时间常数，这些时间常数可以与其他时间常数解耦，但在内部是耦合的。
 
 ### 5.3 无限值时间常数（IVT）
 
 根据式（3），针对带通系统，我们可以将其分解为高通部分+低通部分的组合
 $$H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}$$
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-6.png?raw=true)
+
+![alt text](Pictures/TTC理论-image-6.png)
+
 高频部分（右边）的3dB点$w_n$可依据上文求得，而低频部分（左边）的3dB点$w_l$则需要通过无限值时间常数（IVT）求得
 
 假设其余零点均离$w_l$很远，那么左边部分的高通部分传递函数可以表示为：
@@ -235,7 +242,7 @@ $$
 $a_{mid}=a_n/b_n$代表带通增益，而$w_l$的主导项是$b_{n-1}/b_n$，因此可以解得：
 $$
 \begin{equation}\begin{gathered}
-\omega_{l}\Large\approx\frac{b_{n-1}}{b_n}
+\omega_{l}\approx\frac{b_{n-1}}{b_n}
 =\frac{1}{\tau_1^{23...n}}+\frac{1}{\tau_2^{13...n}}+\ldots+\frac{1}{\tau_n^{12...(n-1)}}\\=\sum_{i=1}^N\frac{1}{\tau_i^\infty}
 \end{gathered}\end{equation}
 $$
@@ -253,7 +260,7 @@ $$
 
 共射级电路如下图所示，共有三个电容$C_{\mu},C_{\pi},C_L$
 其直流增益：$a_0=H^0=-g_mR_2\cdot\frac{r_\pi}{r_\pi+R_1}$
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-7.png?raw=true)
+![alt text](Pictures/TTC理论-image-7.png)
 在实际进行分析频率特性前，我们可以先判断电路中共有几个极点和几个零点，判断思路如下进行：
 
 + 由于电路中共有3个电容，所以最多可以引入3个极点和3个零点
@@ -305,7 +312,7 @@ $$
 
 ### 6.2 Cascode电路
 
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-8.png?raw=true)
+![alt text](Pictures/TTC理论-image-8.png)
 不难看出：$C_e=C_{c1}+C_{\pi 2},C_L=C_{\mu 2}+C_{c2}+C_o$
 因此我们仅需分析4个电容即可
 电路中对4个电容总共可以设置3个初始条件，所以有3个极点
@@ -342,7 +349,7 @@ $$H^{\mu 1}\approx \frac{\frac{r_m\|r_m\|r_{\pi}}{R_1+r_m\|r_m\|r_{\pi}}}{r_m}R_
 ### 6.3 源随器的输入阻抗
 
 如下图a)所示：因为直接求解输入阻抗会出现有些值趋于无穷，不太好表示，所以在这里我们选择求解输入导纳，将输入导纳取倒数即可得到输入阻抗
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/resources/TTC-image-9.png?raw=true)
+![alt text](Pictures/TTC理论-image-9.png)
 
 在源随器的输入处施加一个电压源，通过测得输入电流得到输入导纳：
 很容易通过分析得到：$Y^0=0,Y^{\pi}=0,Y^L=0,Y^{\pi L}=\infty$，而又由于$\tau_L^{\pi}=\tau_{\pi}^L=0$，因此我们得不到一个输入导纳的表达式
