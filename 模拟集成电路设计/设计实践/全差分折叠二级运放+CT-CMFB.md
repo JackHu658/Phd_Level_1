@@ -1,6 +1,7 @@
 # 全差分Folded-Cascode-OTA+CT CMFB
 
 ## 电路设计指标
+
 ![指标](Pictures/全差分折叠二级运放+CT-CMFB-image.png)
 采取TSMC 40nm工艺
 
@@ -11,6 +12,7 @@
 因为是设计OTA，输出是电流，不能用电阻当负载和接反馈，所以选择电容负载+反馈
 
 ## 静态建立误差
+
 ![alt text](Pictures/全差分折叠二级运放+CT-CMFB-image-2.png)
 
 假设是单极点系统，当输入给入一个阶跃的时候，输出电压的函数为：
@@ -39,7 +41,6 @@
 只有满足上式则不会有压摆过程，那么有$$\frac{g_m}{i_d}<\frac{2\sqrt{2}}{0.11V_{out,swing}}$$
 当$V_{out,swing}=0.5V$时，$g_m/i_d<51$，当$V_{out,swing}=1.1V$时，$g_m/i_d<23$
 因此整个电路不存在压摆过程
-
 
 ## 噪声分析
 
@@ -240,6 +241,7 @@ $$\begin{aligned}\frac{V_{OC}}{V_{K}}(s)&=\frac{1+s\frac{R_{cm}}{2}2C_{cm}}{1+s\
 ## 仿真
 
 ### DC仿真
+
 ![alt text](Pictures/全差分折叠二级运放+CT-CMFB/image-27.png)
 开环仿，不用闭环的原因是全局的CMFB保证了每个高阻点的电平均有定义，不会和单端差分一样“抢电流”
 
@@ -271,7 +273,6 @@ $$\begin{aligned}\frac{V_{OC}}{V_{K}}(s)&=\frac{1+s\frac{R_{cm}}{2}2C_{cm}}{1+s\
 输入范围：大约为$0\sim 652mV$
 ![alt text](Pictures/全差分折叠二级运放+CT-CMFB/image-29.png)
 这个定义是给输入一个很小的差分电压($0.1\mu V$)，然后扫共模电压，当差模增益下降3dB的时候，就是输入范围
-
 
 ### 重新设计
 
