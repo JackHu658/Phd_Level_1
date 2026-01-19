@@ -35,7 +35,8 @@
 ### 直观的解释
 
 对于一个闭环系统来说，其传递函数为：
-$$\begin{cases}
+$$
+\begin{cases}
     H=A/(1+Af)\\
     For \quad Af\gg1 \rightarrow H \approx 1/f \\
     For \quad Af\ll1 \rightarrow H \approx A
