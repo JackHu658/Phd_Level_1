@@ -9,7 +9,7 @@
 
 在一般情况下，针对复杂的电路图，如果要用传递函数去分析他的幅频特性，KCL/KVL是分析的首选，但是如果电路过于复杂，计算量十分庞大，不仅要保证计算的过程中不出错（不老眼昏花），还要保证手算的结果化简、合并起来显得合理（这种分析只能到最后再去近似，而不能中途近似，否则结果可能会出现巨大偏差）。很多时候这需要靠Mathematica软件去进行符号运算。尽管如此，最后求解出来的传递函数也可能会很复杂，并不能够很直观的看出优化的主导因素。在传统的教材书中，也有很多例如开路时间常数（OCT）、短路时间常数（SCT）法进行化简的方法，但是并不普适，并没有将电感也包含进来（尽管大多数电路中只会有电容）。哪怕最终结果的代数表达式已经求出，也很难从中洞察出最需改进的点，
 
-基于此，Hajimiri提出了一种Time and Transfer Constant（TTC）的方法
+基于此，Hajimiri教授提出了一种Time and Transfer Constant（TTC）的方法
 
 ## 2. 传递函数的基本性质
 
@@ -47,26 +47,33 @@ $a_0$代表直流增益，$p_i$代表极点(pole)，$z_j$代表零点(zero)，�
 ### 注
 
 1、式（1）和式（2）最适合用来描述低通系统，如下图所示：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image.png?raw=true)
+![alt text](Pictures/TTC理论/image.png)
 但如果遇到带通系统或者高通系统的话这么描述就不合理了。
 针对带通系统来说，可以改写为下式：
 
 $$\begin{equation}H(s)=\frac{\left(1-\frac{z_1}{s}\right)\ldots\left(1-\frac{z_k}{s}\right)}{\left(1-\frac{p_1}{s}\right)\ldots\left(1-\frac{p_k}{s}\right)}\cdot a_{mid}\cdot\frac{\left(1-\frac{s}{z_{k+1}}\right)\ldots\left(1-\frac{s}{z_m}\right)}{\left(1-\frac{s}{p_{k+1}}\right)\ldots\left(1-\frac{s}{p_n}\right).}\end{equation}$$
 
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-1.png?raw=true)
+![alt text](Pictures/TTC理论/image-1.png)
 
-$a_{mid}$代表了带通传递函数的中频增益，$a_{mid}$的左半部分的极点和零点数一定要相等，不然中频段的增益不会是平的，左边的极点和零点分别称为反极点*inverse pole*和反零点*inverse zero*，反极点和反零点的幅频曲线与零极点相==镜像==；相频曲线相同（但左半平面的逆零点是从-90度增到0度；左半平面的逆极点是从90度到0度）
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-2.png?raw=true)
+$a_{mid}$代表了带通传递函数的中频增益，$a_{mid}$的左半部分的极点和零点数一定要相等，不然中频段的增益不会是平的，左边的极点和零点分别称为反极点*inverse pole*和反零点*inverse zero*，反极点和反零点的幅频曲线与零/极点关于各自的零/极点相互==镜像==；相频曲线相同（但左半平面的逆零点是从-90度增到0度；左半平面的逆极点是从90度到0度）
+![alt text](Pictures/TTC理论/image-2.png)
 
 2、根据式（1）和式（2）可以将分子和分母的系数($a_i,b_j$）均用极点和零点表示出来：
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-3.png?raw=true)
+$$\begin{aligned}
+  &b_1 = - \sum_i \frac{1}{p_i} \quad , \quad \frac{a_1}{a_0} = - \sum_i \frac{1}{z_i} \\
+  &b_2 = \sum_i \sum_{j}^{i < j} \frac{1}{p_i p_j} \quad , \quad \frac{a_2}{a_0} = \sum_i \sum_{j}^{i < j} \frac{1}{z_i z_j}\\
+  &\vdots \qquad \qquad\qquad\quad, \qquad \vdots\\
+  &b_n = \frac{(-1)^n}{p_1 p_2 \ldots p_n} \quad , \quad \frac{a_m}{a_0} = \frac{(-1)^m}{p_1 p_2 \ldots z_m}
+\end{aligned}$$
+
+很多时候可以根据$b_1,b_2$的值去做一些简化计算（当零/极点相距较远的时候）
 
 ## 3. 一阶系统
 
 ### 3.1 一阶系统引入
 
 如下图所示，先从一阶系统开始考虑。一阶系统可以抽象为一个电容或电感与内部的与频率无关的器件（如电阻和受控源）组成的电路结构，*x*是输入，*y*是输出
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-4.png?raw=true)
+![alt text](Pictures/TTC理论/image-4.png)
 
 一个储能元件对系统的影响是可能同时引入一个零点和极点（是否真的存在还需要具体电路具体分析），一阶系统的传递函数可以表示为：
 $$\begin{equation}H(s)=\frac{a_0+a_1s}{1+b_1s}\end{equation}$$
@@ -79,7 +86,7 @@ $$\begin{equation}H(s)=\frac{a_0+a_1s}{1+b_1s}\end{equation}$$
 
 我们将符号的上下标全部利用进来，比如$H_a^b$，下标代表所对应的电容C或电感L的值为0（对于电容就是开路，对于电感就是短路）；上标代表所对应的电容C或电感L的值为$\infty$（电容短路，电感开路）
 
-再例如$R_1^0$代表没有电容或电感的值为无穷大，即所有元素均为零值，表现为电容开路电感短路
+再例如$R_1^0$代表没有电容或电感的值为无穷大，而$C_1$或$L_1$为零值，表现为电容开路或电感短路
 
 ### 3.3 一阶系统公式推导
 
@@ -88,7 +95,7 @@ $$a_0=H^0$$
 
 对于带有电容的一阶系统($C_1$)来说，唯一一个时间传递函数就是$\tau_1$，这个值等于$R_1^0C_1$，$R_1^0$的下标1代表了电容$C_1$，上标0代表没有储能元件的值是$\infty$，$R_1^0$这个值就代表了从电容端看进去的阻抗（内部所有独立源，电压源短路，电流源开路）
 
-![alt text](https://github.com/JackHu658/Phd_Level_1/blob/main/%E6%A8%A1%E6%8B%9F%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF%E8%AE%BE%E8%AE%A1/Pictures/image-5.png?raw=true)
+![alt text](Pictures/TTC理论/image-5.png)
 
 于是我们可以得到：
 $$\tau_1\equiv R_1^0C_1=b_1$$
