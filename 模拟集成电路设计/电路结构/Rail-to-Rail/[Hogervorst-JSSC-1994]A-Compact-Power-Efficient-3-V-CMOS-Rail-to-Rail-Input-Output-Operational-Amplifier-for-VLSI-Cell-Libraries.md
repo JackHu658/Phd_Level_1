@@ -1,4 +1,4 @@
-# A Compact Power-Efficient 3 V CMOS Rail-to-Rail Input/Output Operational Amplifier for VLSI Cell Libraries
+# A-Compact-Power-Efficient-3-V-CMOS-Rail-to-Rail-Input/Output-Operational-Amplifier-for-VLSI-Cell-Libraries
 
 !!! Cite 文献
     R. Hogervorst, J. P. Tero, R. G. H. Eschauzier and J. H. Huijsing, "A compact power-efficient 3 V CMOS rail-to-rail input/output operational amplifier for VLSI cell libraries," in IEEE Journal of Solid-State Circuits, vol. 29, no. 12, pp. 1505-1513, Dec. 1994
