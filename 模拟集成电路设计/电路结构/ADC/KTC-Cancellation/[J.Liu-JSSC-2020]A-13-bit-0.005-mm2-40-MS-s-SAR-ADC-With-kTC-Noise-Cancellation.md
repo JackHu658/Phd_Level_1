@@ -208,8 +208,7 @@ $$D_{\mathrm{out}}=\frac{A}{A^{\prime}}V_{\mathrm{in}}(t_2-t_d)-\frac{A-A^{\prim
 
 ![alt text](Pictures/[J.Liu-JSSC-2020]A-13-bit-0.005-mm2-40-MS-s-SAR-ADC-With-kTC-Noise-Cancellation/image-13.png)
 
-在整个奈奎斯特频带内 SNDR ≥ 69 dB、SFDR ≥ 79.2 dB；动态范围 72 dB，对应输入等效噪声 194 μV$_{rms}$。
-
+在整个奈奎斯特频带内 SNDR ≥ 69 dB、SFDR ≥ 79.2 dB；DR = 72 dB，对应输入等效噪声 194 μV$_{rms}$。$$DR=10log_{10}(\frac{P_{signal}}{P_{input-noise}})$$
 
 与已有工作对比显示：与 CT SAR 噪声降低方案相比，本文支持直流输入且带宽扩大 20 倍；与环内缓冲 SAR 相比，内部采样电容缩小 23 倍；在 $\ge 11 \, \text{bit ENOB}$的奈奎斯特 ADC 中面积最小。
 **关键结论是：本文在保持高分辨率与高带宽的同时，显著降低输入电容与系统级功耗负担(因为缓解了Input driver和Reference Buffer的压力)。**
