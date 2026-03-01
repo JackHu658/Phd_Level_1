@@ -30,7 +30,7 @@ $C_{RES}$ 不是传统意义上的“接地尾电容”，而是建立**浮置�
 2. **Dynamic Bias**：随着积分进行，$V_{GS}$ 下降，器件向弱反型/深亚阈推进，$G_m/I_D$ 提升，同时可以避免节点完全放电，节省能耗。  
 3. **Input-CM Insensitivity**：浮置供电域自适应平移，保持 n/p 支路平衡，显著降低输入共模变化对噪声、失调、延时的影响。
 
-## 2. 传统架构回顾与局限性
+## 2. 传统架构回顾与新架构的提出
 
 ### 2.1 SA latch
 
@@ -39,8 +39,8 @@ $C_{RES}$ 不是传统意义上的“接地尾电容”，而是建立**浮置�
 **问题1：功耗过高**
 低噪声 SA 通常使用两侧积分电容 $C_X$。每次比较周期中，这两只电容经历“充放电全摆幅”：
 
-- 单支路能量尺度约 $C_XV_{DD}^2$，
-- 差分两支路总计约 $2C_XV_{DD}^2$。  
+- 单支路能量尺度约 $C_XV_{DD}^2$
+- 差分两支路总计约 $2C_XV_{DD}^2$  
 这就是 SA 在低噪声设计下难以继续提升能效的硬下限项。
 
 **问题2：输入共模电压敏感**
@@ -74,21 +74,58 @@ $$\sigma_{n(\mathrm{os}),\mathrm{in}}\approx\sqrt{\sigma_{n(\mathrm{os}),\mathrm
 
 ### 2.2 动态偏置 (DB) 的增益机理
 
-DB 通过尾电容抬升源电位，压缩输入对过驱动 $(V_{GS}-V_{TH})$：
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-1.png)
+
+DB 通过尾电容抬升源电位($V_S$)，压缩输入对过驱动 $(V_{GS}-V_{TH})$：
 
 - 提升 $g_m/I_D$（更接近弱反型高效率区）；
 - 当输入对被“软关断”后，终止继续放电，降低无效能耗。  
 因此 DB 相比纯 SA 通常可显著改善 FoM。
 
-#### 2.3 传统结构输入共模敏感性的根因
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-2.png)
+
+为了进一步的节省能耗，提高效率，提出了改进版的DB结构：
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-3.png)
+这种结构的好处是：
+
+- 可以实现电流的复用，使得跨导是传统结构的两倍：$G_m\equiv g_{m,n}+g_{m,p}$
+- 当处于积分阶段时，$V_{S-}$上升，$V_{S+}$减小，导致NMOS和PMOS差分对的过驱动电压均减小，$g_m/I_D$增加，进一步提高了效率，同时可以避免完全放电
+  
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-4.png)
+
+缺点是：**对输入共模电平和PVT敏感——因为缺乏有效的CMFB**
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-5.png)
+当处于SF工艺角时，PMOS占主导，反而给$V_X$点充电；当处于FS工艺角时，NMOS占主导，放电更明显
+输入共模电压的变化同样分析
+
+### 2.3 传统结构输入共模敏感性的根本原因
+
 - SA/DB 的尾管常在**线性区**，尾电流 $I_D$ 对输入共模 $V_{I,CM}$ 强相关；
 - $I_D$ 变化直接导致积分斜率、有效积分时间、预放增益变化；
 - 进一步引发噪声、失调、延迟的联动漂移。  
 本质是：尾电流通道未隔离共模扰动。
 
-### 3. 数学推导与理论模型 (Mathematical Derivations)
+### 2.4 FIA结构
 
-#### 3.1 增益分析（式 5–9）
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-6.png)
+由于DB结构PVT和输入共模敏感的原因是缺少有效的CMFB，输出共模无法固定，因此在前者的基础上提出了基于FIA的比较器
+这种结构的好处是：
+
+- $C_{RES}=C_{TAIL}/2$，总电容减小了75%
+- 依旧可以实现电流复用
+- 为前置放大器提供了一个隔离的电压域
+- 由于\(C_{\text{RES}}\)的输入和输出电流必须相等（\(I_{\text{AMP+}}=I_{\text{AMP-}}\)），流入积分电容的共模电流\(I_{X,\text{CM}}\)被迫为0，从而无需专用的共模反馈电路即可实现恒定的输出共模电压
+- 对PVT和输入共模电压变化不敏感
+  - ![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-7.png)
+  - 当位于SF角时，PMOS占主导地位，为了保证\(I_{\text{AMP+}}=I_{\text{AMP-}}\)，需要让$V_{S-},V_{S+}$均减小，从而加大NMOS的流出电流，减小PMOS的流入电流，进而保证\(I_{\text{AMP+}}=I_{\text{AMP-}}\)，所以在开始积分的时候会有个跳变
+  - 当位于FS角时，NMOS占主导地位，同样为了保证\(I_{\text{AMP+}}=I_{\text{AMP-}}\)，需要让$V_{S-},V_{S+}$均增大
+  - 当输入共模电压$V_{I,CM}=0.4V$，PMOS占主导，需要让$V_{S-},V_{S+}$均减小
+  - 当输入共模电压$V_{I,CM}=0.8V$，NMOS占主导，需要让$V_{S-},V_{S+}$均增大
+
+## 3. 数学推导与理论模型
+
+### 3.1 增益分析
+
 弱反型近似下：
 \[
 G_m(t)\approx 2\frac{I_D(t)}{nU_T}=\frac{I_{AMP}(t)}{nU_T}\tag{5}
@@ -119,7 +156,8 @@ A_V(T_{INT})=\frac{\Delta V_{X,DM}(T_{INT})}{\Delta V_{I,DM}}
 
 论文给出的典型量级：$C_{RES}=2\ \text{pF}$、$C_X\approx 250\ \text{fF}$、$\Delta V_S\approx125\ \text{mV}$（1 mV 输入），理论增益约 60，考虑有限 $r_o$ 后仿真约 30，仍明显高于 SA（常 <10 量级）。
 
-#### 3.2 噪声分析（式 12, 15, 17）
+### 3.2 噪声分析
+
 - **SA：**
 \[
 \sigma^2_{in,SA}(T_{INT})=\frac{2nkT}{V_{THN}C_X}\cdot\frac{I_D}{g_m}\tag{12}
@@ -135,7 +173,8 @@ A_V(T_{INT})=\frac{\Delta V_{X,DM}(T_{INT})}{\Delta V_{I,DM}}
 
 结论：FIA 同时利用更高 $G_m/I_D$ 与更高积分增益压制后级锁存噪声。
 
-#### 3.3 能量效率 FoM（式 21–22）
+### 3.3 能量效率 FoM（式 21–22）
+
 定义：
 \[
 FoM = E\cdot \sigma_{in}^2 \tag{18}
@@ -154,16 +193,20 @@ FoM_{FIA}=4nkT\cdot V_{DD}\cdot \frac{I_D}{G_m}\tag{21}
 
 代入文中典型值：$V_{DD}=1.2\ \text{V}$，$V_{TH}\approx0.55\ \text{V}$，且 FIA 平均 $G_m/I_D$ 比 SA 高约 $2.5\times$，理论效率提升可超 $5\times$；实测系统级超过 $7\times$（相对 SA）。
 
-### 4. 关键设计细节与鲁棒性分析 (Design Details & Robustness)
+## 4. 关键设计细节与鲁棒性分析
 
-#### 4.1 工艺角稳定性（无专用 CMFB）
+### 4.1 工艺角稳定性（无专用 CMFB）
+
 传统 CMOS DB 积分器在 SF/FS 角易出现单边主导并拉到电源轨，积分失效。  
 FIA 通过浮置域自适应平移 $V_{S+},V_{S-}$：
+
 - SF：域下移，抑制过强 pMOS；
 - FS：域上移，抑制过强 nMOS。  
 因此无需独立 CMFB 即可维持双支路电流平衡。
 
-#### 4.2 寄生模型（式 23–25）
+### 4.2 寄生模型
+
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-8.png)
 含寄生时，共模电流关系：
 \[
 I_{P+}(t)-I_{P-}(t)=I_{X,CM}(t)\tag{23}
@@ -175,18 +218,28 @@ I_{P+}(t)-I_{P-}(t)=I_{X,CM}(t)\tag{23}
 \Delta V_{X,CM}\approx -2\Delta V_{I,CM}\frac{C_P}{C_X}\tag{25}
 \]
 
-文中实现：$C_{RES}$ 采用 2 pF MoM，后仿寄生约 1.5%，$C_X\approx250$ fF，则输出共模扰动约为输入共模扰动的 $1/4$，相对简单 CMOS-DB（共模增益约 20）可提升 >30 dB CMRR。
+文中实现：$C_{RES}$ 采用 2 pF MoM，后仿寄生约 1.5%，$C_X\approx250$ fF，则输出共模扰动约为输入共模扰动的 $1/4$，相对简单 CMOS-DB（共模增益约 20，输入变化1mV，输出会变化20mV）可提升 >30 dB CMRR。
 
-#### 4.3 为什么选 $C_{RES}=2$ pF
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-9.png)
+当输入共模电压在0.4至0.8 V之间变化时，输出共模电压的变化小于100 mV，稳定后的FIA增益变化在15%以内，正如测量结果所示，这对比较器性能的影响有限。
+
+### 4.3 为什么选 $C_{RES}=2$ pF
+
 折中逻辑：
+
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-10.png)
+
 - 太小：预放增益不足，锁存噪声抬升；
 - 太大：动态偏置效应减弱，$G_m/I_D$ 提升变小，且面积变大；
 - 速度上大 $C_{RES}$ 有利于预放相位，但不一定带来最优综合 FoM。  
 最终选 2 pF，在能效、速度、面积三者之间取得平衡；相对同噪声 SA，面积约 +30%。
 
-### 5. 实验结果与性能对比 (Measurements & Comparison)
+## 5. 实验结果与性能对比 (Measurements & Comparison)
 
-#### 5.1 180 nm 原型关键实测
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-11.png)
+
+### 5.1 180 nm 原型关键实测
+
 - 工艺：180 nm CMOS  
 - 供电：1.2 V  
 - 输入等效噪声（RMS）：**46 μV（FIA）** vs **62 μV（SA）**  
@@ -194,15 +247,23 @@ I_{P+}(t)-I_{P-}(t)=I_{X,CM}(t)\tag{23}
 - 输入共模扫描下：FIA 噪声波动约较 SA 降低 4 倍  
 - 失调共模敏感性（10 片）：**5.3 mV（SA）** vs **0.9 mV（FIA）**  
 - 延迟共模敏感性：$V_{I,CM}$ 从 0.6 V 到 0.4 V，SA 延迟约恶化 $10\times$，FIA 仅约 +15%
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-12.png)
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-13.png)
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-14.png)
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-15.png)
 
-#### 5.2 设计参数（文中可明确提取）
+### 5.2 设计参数
+
 - $C_{RES}=2$ pF  
 - $C_X\approx 250$ fF（含积分节点寄生）  
 - 输入晶体管尺寸（表 I）：  
   - $M_1,M_2$: $W=44\ \mu m,\ L=0.18\ \mu m$  
   - $M_3,M_4$: $W=22\ \mu m,\ L=0.18\ \mu m$
 
-#### 5.3 对比结论
-- 相对 SA：系统能效提升 **>7×**（论文主结论）  
+### 5.3 对比结论
+
+- 相对 SA：系统能效提升 **>7×**
 - 相对当时次优动态比较器（DB 类）：**>2.5×**  
 - 在低噪声目标下，同时获得了输入共模/工艺角鲁棒性，这是 FIA 相比既有 SA/DB 路线的决定性优势。
+  
+![alt text](Pictures/[X.Tang-JSSC-2020]An-Energy-Efficient-Comparator-With-Dynamic-Floating-Inverter-Amplifier/image-16.png)
